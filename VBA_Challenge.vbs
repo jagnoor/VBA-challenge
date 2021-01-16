@@ -132,7 +132,7 @@
                 
                 Next i
                 
-            'Djust column width automatically
+            ' column width automatically
             Worksheets(ActiveWorkSheetName).Columns("A:Z").AutoFit
                 
         Next ws
