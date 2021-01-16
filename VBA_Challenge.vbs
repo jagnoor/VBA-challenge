@@ -3,28 +3,19 @@ Sub MultipleYearStockData():
 
     For Each ws In Worksheets
     
-        Dim WorksheetName As String
-        'Current row
+        Dim ActiveWorkSheetName As String
         Dim i As Long
-        'Start row of ticker block
         Dim j As Long
-        'Index counter to fill Ticker row
-        Dim TickCount As Long
-        'Last row column A
+        Dim TickerRowCount As Long
         Dim LastRowA As Long
-        'last row column I
         Dim LastRowI As Long
-        'Variable for percent change calculation
         Dim PerChange As Double
-        'Variable for greatest increase calculation
         Dim GreatIncr As Double
-        'Variable for greatest decrease calculation
         Dim GreatDecr As Double
-        'Variable for greatest total volume
         Dim GreatVol As Double
         
-        'Get the WorksheetName
-        WorksheetName = ws.Name
+        'Get the WorkSheetName
+        ActiveWorkSheetName = ws.Name
         
         'Create column headers
         ws.Cells(1, 9).Value = "Ticker"
@@ -38,7 +29,7 @@ Sub MultipleYearStockData():
         ws.Cells(4, 15).Value = "Greatest Total Volume"
         
         'Set Ticker Counter to first row
-        TickCount = 2
+        TickerRowCount = 2
         
         'Set start row to 2
         j = 2
@@ -53,22 +44,20 @@ Sub MultipleYearStockData():
                 'Check if ticker name changed
                 If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
                 
-                'Write ticker in column I (#9)
-                ws.Cells(TickCount, 9).Value = ws.Cells(i, 1).Value
+                ws.Cells(TickerRowCount, 9).Value = ws.Cells(i, 1).Value
                 
-                'Calculate and write Yearly Change in column J (#10)
-                ws.Cells(TickCount, 10).Value = ws.Cells(i, 6).Value - ws.Cells(j, 3).Value
+                ws.Cells(TickerRowCount, 10).Value = ws.Cells(i, 6).Value - ws.Cells(j, 3).Value
                 
                     'Conditional formating
-                    If ws.Cells(TickCount, 10).Value < 0 Then
+                    If ws.Cells(TickerRowCount, 10).Value < 0 Then
                 
                     'Set cell background color to red
-                    ws.Cells(TickCount, 10).Interior.ColorIndex = 3
+                    ws.Cells(TickerRowCount, 10).Interior.ColorIndex = 3
                 
                     Else
                 
                     'Set cell background color to green
-                    ws.Cells(TickCount, 10).Interior.ColorIndex = 4
+                    ws.Cells(TickerRowCount, 10).Interior.ColorIndex = 4
                 
                     End If
                     
@@ -77,19 +66,18 @@ Sub MultipleYearStockData():
                     PerChange = ((ws.Cells(i, 6).Value - ws.Cells(j, 3).Value) / ws.Cells(j, 3).Value)
                     
                     'Percent formating
-                    ws.Cells(TickCount, 11).Value = Format(PerChange, "Percent")
+                    ws.Cells(TickerRowCount, 11).Value = Format(PerChange, "Percent")
                     
                     Else
                     
-                    ws.Cells(TickCount, 11).Value = Format(0, "Percent")
+                    ws.Cells(TickerRowCount, 11).Value = Format(0, "Percent")
                     
                     End If
                     
-                'Calculate and write total volume in column L (#12)
-                ws.Cells(TickCount, 12).Value = WorksheetFunction.Sum(Range(ws.Cells(j, 7), ws.Cells(i, 7)))
+                ws.Cells(TickerRowCount, 12).Value = WorksheetFunction.Sum(Range(ws.Cells(j, 7), ws.Cells(i, 7)))
                 
-                'Increase TickCount by 1
-                TickCount = TickCount + 1
+                'Increase TickerRowCount by 1
+                TickerRowCount = TickerRowCount + 1
                 
                 'Set new start row of the ticker block
                 j = i + 1
@@ -98,7 +86,6 @@ Sub MultipleYearStockData():
             
             Next i
             
-        'Find last non-blank cell in column I
         LastRowI = ws.Cells(Rows.Count, 9).End(xlUp).Row
         'MsgBox ("Last row in column I is " & LastRowI)
         
@@ -110,7 +97,6 @@ Sub MultipleYearStockData():
             'Loop for summary
             For i = 2 To LastRowI
             
-                'For greatest total volume--check if next value is larger--if yes take over a new value and populate ws.Cells
                 If ws.Cells(i, 12).Value > GreatVol Then
                 GreatVol = ws.Cells(i, 12).Value
                 ws.Cells(4, 16).Value = ws.Cells(i, 9).Value
@@ -121,7 +107,6 @@ Sub MultipleYearStockData():
                 
                 End If
                 
-                'For greatest increase--check if next value is larger--if yes take over a new value and populate ws.Cells
                 If ws.Cells(i, 11).Value > GreatIncr Then
                 GreatIncr = ws.Cells(i, 11).Value
                 ws.Cells(2, 16).Value = ws.Cells(i, 9).Value
@@ -132,7 +117,6 @@ Sub MultipleYearStockData():
                 
                 End If
                 
-                'For greatest decrease--check if next value is smaller--if yes take over a new value and populate ws.Cells
                 If ws.Cells(i, 11).Value < GreatDecr Then
                 GreatDecr = ws.Cells(i, 11).Value
                 ws.Cells(3, 16).Value = ws.Cells(i, 9).Value
@@ -151,7 +135,7 @@ Sub MultipleYearStockData():
             Next i
             
         'Djust column width automatically
-        Worksheets(WorksheetName).Columns("A:Z").AutoFit
+        Worksheets(ActiveWorkSheetName).Columns("A:Z").AutoFit
             
     Next ws
         
