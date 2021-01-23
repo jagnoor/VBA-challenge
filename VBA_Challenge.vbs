@@ -14,10 +14,8 @@
             Dim GreatDecr As Double
             Dim GreatVol As Double
             
-            'Get the WorkSheetName
             ActiveWorkSheetName = ws.Name
             
-            'Create column headers
             ws.Cells(1, 9).Value = "Ticker"
             ws.Cells(1, 10).Value = "Yearly Change"
             ws.Cells(1, 11).Value = "Percent Change"
@@ -39,7 +37,6 @@
                 'Loop through all rows
                 For i = 2 To LastRowA
                 
-                    'Check if ticker name changed
                     If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
                     
                     ws.Cells(TickerRowCount, 9).Value = ws.Cells(i, 1).Value
@@ -87,7 +84,6 @@
             LastRowI = ws.Cells(Rows.Count, 9).End(xlUp).Row
             'MsgBox ("Last row in column I is " & LastRowI)
             
-            'Prepare for summary
             GreatVol = ws.Cells(2, 12).Value
             GreatIncr = ws.Cells(2, 11).Value
             GreatDecr = ws.Cells(2, 11).Value
@@ -132,7 +128,6 @@
                 
                 Next i
                 
-            ' column width automatically
             Worksheets(ActiveWorkSheetName).Columns("A:Z").AutoFit
                 
         Next ws
